@@ -1,0 +1,55 @@
+<?php
+session_start();
+require_once 'db.php';
+
+if (isset($_POST['register'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $verificationCode = md5(uniqid());
+
+    $sql = "INSERT INTO users (name, email, password, verification_code) VALUES ('$name', '$email', '$password', '$verificationCode')";
+    mysqli_query($conn, $sql);
+
+    $to = $email;
+    $subject = "Account Verification";
+    $message = "Click the link below to verify your account:\n\n";
+    $message .= "http://localhost:8080/result-management-system/verify.php?code=$verificationCode";
+    $headers = "From: randomlyuser0101@gmail.com";
+    mail($to, $subject, $message, $headers);
+
+    $_SESSION['success'] = "Registration complete! Please check your email to verify your account.";
+    header("Location: index.php");
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Student Result Management System</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Result Management System</h1>
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="success"><?php echo $_SESSION['success']; ?></div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+        <div class="form-container">
+            <h2>Register</h2>
+            <form method="POST" action="">
+                <label>Name:</label>
+                <input type="text" name="name" required><br><br>
+                <label>Email:</label>
+                <input type="email" name="email" required><br><br>
+                <label>Password:</label>
+                <input type="password" name="password" required><br><br>
+                <input type="submit" name="register" value="Register">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

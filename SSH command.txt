@@ -1,0 +1,142 @@
+ ********SSH******
+
+      ####Configuration R1 #######
+
+1.Enable:
+config t
+enable password cisco
+int f0/0
+ip add 192.168.1.1 255.255.255.0
+no sh =enables an interface (brings it up)
+sh ip int br
+
+
+       ####Configuration R2 #######
+config t
+enable password cisco
+int f0/0
+ip add 192.168.1.2 255.255.255.0
+no sh
+sh ip int br
+config t
+ip domain-name Networkforyou
+crypto key generate rsa
+How many bits in the modulus[512]: 800
+ip ssh version 2
+line vty(virtual terminal) 0 3 =means kyjn k access diboHostname R1
+transport input telnet/ssh=machine telnet/ssh chara kew entry nite parbe na 
+login local=database theke user&pass diye local e login kra
+username admin password admin
+cntr z
+wr
+sh run =(details)
+wr
+
+
+
+
+********* Remotely control ssh from R1************
+
+ssh -l admin 192.168.1.2
+password: admin
+en
+pass:cisco
+sh run
+sh ip int br
+exit =for move to R1
+
+*******Telnet set for R1*******
+config t
+line vty 0 4
+password 12345
+login
+cntl z
+wr
+
+******Remotly control telnet from R2**********
+telnet 192.168.1.1
+pass:12345
+en
+pass:cisco
+sh run
+sh ip int br
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2.Now we can generate the RSA keypair:
+crypto key generate rsa
+
+3.Then it will ask:
+
+The name of the keys will be:Branch2.Networkforyou
+Choose the size of the key modulus in the range of 360 to 2048 for your
+General Purpose Keys.Choosing a key modulus  greater than 512 may take 
+a few minutes.
+
+
+4.How many bits in the modulus[512]
+so we will choose let me choose 2048
+
+5.Then it will enable ssh
+6.Then we will type ip ssh version 2
+
+7.Then it will enable ssh
+
+8.line vty(virtual terminal) 0 4 =means kyjn k access dibo
+
+9.transport input telnet/ssh=machine telnet/ssh chara kew entry nite parbe na 
+
+10.login local=database theke user&pass diye local e login kra
+
+11.username: password
+   admin     admin
+
+12.How to access ssh
+   ssh -l username ip
+   password
+
+
+2.enable password
+         cisco
+
+
+3.Remote Login
+
+*****port****
+ssh=22
+telnet=23
+
+
+
+******Command******
+
+#line vty(virtual terminal) 0 4 =means kyjn k access dibo
+#login local=database theke user&pass diye local e login kra
+#transport input telnet/ssh=machine telnet/ssh chara kew entry nite parbe na 
+#ip add dhcp=auto ip generate
+#no sh=enables an interface (brings it up)
+#do sh ip int br=show ip details 
+#crypto key generate rsa
+#show user
